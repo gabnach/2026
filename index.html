@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GABRIELA MONSALVE // Design & Business Repository</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f4f6',
+                            100: '#e5e6eb',
+                            800: '#1e2029',
+                            900: '#111218',
+                            accent: '#2563eb'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Courier New', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #8883; border-radius: 2px; }
+        .grid-bg {
+            background-size: 32px 32px;
+            background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-white dark:bg-brand-900 text-neutral-900 dark:text-neutral-100 transition-colors duration-200 min-h-screen flex flex-col">
+
+    <!-- Navbar Minimalista -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-brand-900/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="w-3 h-3 bg-brand-accent rounded-full inline-block"></span>
+                <span class="mono font-semibold tracking-wider text-sm uppercase">GABRIELA MONSALVE</span>
+                <span class="text-xs text-neutral-400 border-l border-neutral-200 dark:border-neutral-800 pl-3 hidden sm:inline">PERSONAL REPOSITORY</span>
+            </div>
+
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <button id="profileBtn" onclick="openProfileModal()" class="flex items-center gap-2 px-2.5 py-1.5 rounded border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition text-xs mono">
+                    <div class="w-5 h-5 rounded-full bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 flex items-center justify-center font-bold text-[10px]">
+                        GM
+                    </div>
+                    <span class="hidden sm:inline">PROFILE</span>
+                </button>
+
+                <button id="bookmarkFilterBtn" class="mono text-xs flex items-center gap-1.5 px-3 py-1.5 rounded border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 transition">
+                    <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
+                    <span>SAVED (<span id="savedCount">0</span>)</span>
+                </button>
+                <button id="themeToggle" class="p-2 text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white transition">
+                    <i data-lucide="moon" id="moonIcon" class="w-4 h-4 hidden dark:block"></i>
+                    <i data-lucide="sun" id="sunIcon" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header / Hero Section Personalizado -->
+    <section class="border-b border-neutral-200 dark:border-neutral-800 py-12 bg-neutral-50/50 dark:bg-brand-900/50 grid-bg text-neutral-300 dark:text-neutral-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-neutral-900 dark:text-neutral-100">
+            <div class="max-w-3xl">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="mono text-xs text-brand-accent font-medium">// CURATED BY GABRIELA MONSALVE</span>
+                    <span class="text-neutral-300 dark:text-neutral-700">•</span>
+                    <span class="mono text-xs text-neutral-400">INGENIERÍA COMERCIAL @ UAI</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl font-light tracking-tight mb-4">
+                    Repositorio personal de diseño, identidad de marca, sistemas visuales e inspiración.
+                </h1>
+                <p class="text-neutral-500 dark:text-neutral-400 text-sm leading-relaxed">
+                    Un espacio curado para registrar proyectos, referentes estéticos y documentación visual. Colección enfocada en la intersección entre negocios, diseño minimalista y branding contemporáneo.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toolbar: Filtros, Búsqueda y Vistas -->
+    <section class="sticky top-16 z-30 bg-white/90 dark:bg-brand-900/90 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-4 items-center justify-between">
+            
+            <!-- Búsqueda -->
+            <div class="relative w-full md:w-72">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400"></i>
+                <input type="text" id="searchInput" placeholder="Buscar proyecto, concepto o tag..." 
+                    class="w-full bg-neutral-100 dark:bg-neutral-800/60 border border-transparent focus:border-neutral-300 dark:focus:border-neutral-700 rounded-md pl-9 pr-4 py-1.5 text-xs text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-none transition">
+            </div>
+
+            <!-- Filtros de Categorías -->
+            <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none" id="categoriesContainer">
+                <!-- Se generan dinámicamente -->
+            </div>
+
+            <!-- Vistas -->
+            <div class="flex items-center gap-1 border border-neutral-200 dark:border-neutral-800 rounded p-0.5 ml-auto md:ml-0">
+                <button id="gridViewBtn" class="p-1.5 rounded text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800 transition">
+                    <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+                </button>
+                <button id="listViewBtn" class="p-1.5 rounded text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition">
+                    <i data-lucide="list" class="w-3.5 h-3.5"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grid / List Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div id="projectsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300">
+            <!-- Tarjetas inyectadas vía JS -->
+        </div>
+
+        <div id="emptyState" class="hidden text-center py-24">
+            <i data-lucide="file-x" class="w-10 h-10 text-neutral-300 dark:text-neutral-700 mx-auto mb-3"></i>
+            <p class="text-sm text-neutral-500 dark:text-neutral-400 mono">NO_RESULTS_FOUND</p>
+            <p class="text-xs text-neutral-400 dark:text-neutral-600 mt-1">Prueba cambiando el término de búsqueda o filtro.</p>
+        </div>
+    </main>
+
+    <!-- Footer Minimalista -->
+    <footer class="border-t border-neutral-200 dark:border-neutral-800 py-6 text-xs text-neutral-400 dark:text-neutral-600 bg-white dark:bg-brand-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="mono">
+                © 2026 GABRIELA MONSALVE — PERSONAL DESIGN ARCHIVE
+            </div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-neutral-900 dark:hover:text-neutral-200 transition">LinkedIn</a>
+                <a href="#" class="hover:text-neutral-900 dark:hover:text-neutral-200 transition">GitHub</a>
+                <a href="#" class="hover:text-neutral-900 dark:hover:text-neutral-200 transition">Figma</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para Perfil del Autor -->
+    <div id="profileModal" class="fixed inset-0 z-50 bg-neutral-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-900 border border-neutral-200 dark:border-neutral-800 rounded-lg max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 p-2 rounded-full text-neutral-400 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 dark:bg-neutral-800 transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-16 h-16 rounded-full bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 flex items-center justify-center font-bold text-xl mono flex-shrink-0">
+                    GM
+                </div>
+                <div>
+                    <h2 class="text-xl font-medium text-neutral-900 dark:text-neutral-100">Gabriela Antonia Monsalve</h2>
+                    <p class="mono text-xs text-neutral-400 mt-0.5">Ingeniería Comercial @ UAI</p>
+                    <p class="mono text-[11px] text-brand-accent mt-0.5">Santiago, Chile</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed border-t border-b border-neutral-100 dark:border-neutral-800 py-4 mb-6">
+                <p>
+                    Estudiante de Ingeniería Comercial con pasión por la gestión estratégica, el diseño visual, las tendencias contemporáneas de branding y la optimización de procesos digitales.
+                </p>
+                <div class="grid grid-cols-2 gap-3 pt-2 mono text-[11px]">
+                    <div class="bg-neutral-50 dark:bg-brand-800/50 p-2.5 rounded border border-neutral-200/60 dark:border-neutral-800">
+                        <span class="text-neutral-400 block mb-0.5">ENFOQUE</span>
+                        <span class="font-medium text-neutral-900 dark:text-neutral-100">Brand Strategy & Business</span>
+                    </div>
+                    <div class="bg-neutral-50 dark:bg-brand-800/50 p-2.5 rounded border border-neutral-200/60 dark:border-neutral-800">
+                        <span class="text-neutral-400 block mb-0.5">SOFTWARE</span>
+                        <span class="font-medium text-neutral-900 dark:text-neutral-100">Figma, Rhinoceros 3D</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <span class="mono text-[11px] text-neutral-400">STATUS: ACTIVE ARCHIVE</span>
+                <button onclick="closeProfileModal()" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 rounded text-xs mono transition">
+                    CLOSE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Detalle de Proyecto -->
+    <div id="projectModal" class="fixed inset-0 z-50 bg-neutral-950/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-brand-900 border border-neutral-200 dark:border-neutral-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+            <button id="closeModalBtn" class="absolute top-4 right-4 p-2 rounded-full text-neutral-400 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 dark:bg-neutral-800 transition">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+            <div id="modalContent" class="p-6 sm:p-8">
+                <!-- Contenido dinámico del modal -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data de los proyectos
+        const PROJECTS = [
+            {
+                id: '1',
+                title: 'MonoDesign System',
+                category: 'UI/UX',
+                year: '2026',
+                author: 'Gabriela Monsalve',
+                description: 'Sistema de diseño minimalista basado en retículas suizas rígidas y accesibilidad AA+.',
+                image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80',
+                colors: ['#111218', '#F4F4F6', '#2563EB', '#888888'],
+                tags: ['Design System', 'UI/UX', 'Figma', 'Tokens'],
+                link: '#'
+            },
+            {
+                id: '2',
+                title: 'Kuro Studio Identity',
+                category: 'Brand Identity',
+                year: '2025',
+                author: 'Gabriela Monsalve',
+                description: 'Identidad visual para estudio de arquitectura contemporánea con enfoque en sombras y estructuras limpias.',
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+                colors: ['#000000', '#222222', '#E5E5E5', '#FFFFFF'],
+                tags: ['Branding', 'Minimal', 'Architecture'],
+                link: '#'
+            },
+            {
+                id: '3',
+                title: 'Neue Grotesk Specimen',
+                category: 'Typography',
+                year: '2026',
+                author: 'Curado por GM',
+                description: 'Especímen tipográfico interactivo para la fuente sans-serif geométrica Neue Grotesk.',
+                image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
+                colors: ['#0F172A', '#38BDF8', '#F8FAFC'],
+                tags: ['Typography', 'Editorial', 'WebFont'],
+                link: '#'
+            },
+            {
+                id: '4',
+                title: 'Rhino 3D CAD Modeling',
+                category: '3D Graphics',
+                year: '2026',
+                author: 'Gabriela Monsalve',
+                description: 'Modelado y renders tridimensionales en Rhinoceros 3D explorando refracción cromática y volúmenes puros.',
+                image: 'https://images.unsplash.com/photo-1633167606207-d840b5070fc2?auto=format&fit=crop&w=800&q=80',
+                colors: ['#18181B', '#A1A1AA', '#E4E4E7'],
+                tags: ['3D', 'Rhino3D', 'CAD', 'Assets'],
+                link: '#'
+            },
+            {
+                id: '5',
+                title: 'Spatial Audio Interface',
+                category: 'UI/UX',
+                year: '2025',
+                author: 'Curado por GM',
+                description: 'Interfaz experimental de usuario para la manipulación y ecualización de audio espacial 3D.',
+                image: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?auto=format&fit=crop&w=800&q=80',
+                colors: ['#09090B', '#27272A', '#10B981'],
+                tags: ['Audio', 'UI/UX', 'Experimental'],
+                link: '#'
+            },
+            {
+                id: '6',
+                title: 'Modern Spatial Gallery',
+                category: 'Spatial Design',
+                year: '2026',
+                author: 'Gabriela Monsalve',
+                description: 'Propuesta conceptual de diseño espacial e interiorismo para galerías de arte contemporáneo.',
+                image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80',
+                colors: ['#292524', '#78716C', '#E7E5E4'],
+                tags: ['Architecture', 'Spatial', 'Gallery'],
+                link: '#'
+            }
+        ];
+
+        const CATEGORIES = ['All', 'UI/UX', 'Brand Identity', 'Typography', '3D Graphics', 'Spatial Design'];
+
+        // Estado Global
+        let currentCategory = 'All';
+        let searchQuery = '';
+        let currentView = 'grid'; // 'grid' | 'list'
+        let savedProjects = JSON.parse(localStorage.getItem('saved_projects') || '[]');
+        let onlySaved = false;
+
+        // Elementos DOM
+        const projectsContainer = document.getElementById('projectsContainer');
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const searchInput = document.getElementById('searchInput');
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const listViewBtn = document.getElementById('listViewBtn');
+        const emptyState = document.getElementById('emptyState');
+        const bookmarkFilterBtn = document.getElementById('bookmarkFilterBtn');
+        const savedCountEl = document.getElementById('savedCount');
+        const projectModal = document.getElementById('projectModal');
+        const profileModal = document.getElementById('profileModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Inicialización
+        function init() {
+            renderCategories();
+            renderProjects();
+            updateSavedCount();
+            lucide.createIcons();
+
+            // Event Listeners
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderProjects();
+            });
+
+            gridViewBtn.addEventListener('click', () => setView('grid'));
+            listViewBtn.addEventListener('click', () => setView('list'));
+
+            bookmarkFilterBtn.addEventListener('click', () => {
+                onlySaved = !onlySaved;
+                bookmarkFilterBtn.classList.toggle('bg-brand-accent', onlySaved);
+                bookmarkFilterBtn.classList.toggle('text-white', onlySaved);
+                bookmarkFilterBtn.classList.toggle('border-brand-accent', onlySaved);
+                renderProjects();
+            });
+
+            themeToggle.addEventListener('click', toggleTheme);
+            closeModalBtn.addEventListener('click', closeModal);
+            projectModal.addEventListener('click', (e) => {
+                if (e.target === projectModal) closeModal();
+            });
+            profileModal.addEventListener('click', (e) => {
+                if (e.target === profileModal) closeProfileModal();
+            });
+        }
+
+        // Modal de Perfil
+        function openProfileModal() {
+            profileModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal() {
+            profileModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Render Categorías
+        function renderCategories() {
+            categoriesContainer.innerHTML = CATEGORIES.map(cat => `
+                <button onclick="setCategory('${cat}')" 
+                    class="px-3 py-1 text-xs rounded transition mono whitespace-nowrap ${
+                        currentCategory === cat 
+                            ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 font-medium' 
+                            : 'text-neutral-500 hover:text-neutral-900 dark:hover:text-white bg-neutral-100 dark:bg-neutral-800/40'
+                    }">
+                    ${cat.toUpperCase()}
+                </button>
+            `).join('');
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            renderCategories();
+            renderProjects();
+        }
+
+        function setView(view) {
+            currentView = view;
+            if (view === 'grid') {
+                projectsContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300';
+                gridViewBtn.className = 'p-1.5 rounded text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800 transition';
+                listViewBtn.className = 'p-1.5 rounded text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition';
+            } else {
+                projectsContainer.className = 'flex flex-col gap-3 transition-all duration-300';
+                listViewBtn.className = 'p-1.5 rounded text-neutral-900 dark:text-white bg-neutral-100 dark:bg-neutral-800 transition';
+                gridViewBtn.className = 'p-1.5 rounded text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition';
+            }
+            renderProjects();
+        }
+
+        // Filtrar Proyectos
+        function getFilteredProjects() {
+            return PROJECTS.filter(project => {
+                const matchesCategory = currentCategory === 'All' || project.category === currentCategory;
+                const matchesSearch = project.title.toLowerCase().includes(searchQuery) ||
+                                      project.author.toLowerCase().includes(searchQuery) ||
+                                      project.tags.some(tag => tag.toLowerCase().includes(searchQuery));
+                const matchesSaved = !onlySaved || savedProjects.includes(project.id);
+                return matchesCategory && matchesSearch && matchesSaved;
+            });
+        }
+
+        // Render Proyectos
+        function renderProjects() {
+            const filtered = getFilteredProjects();
+
+            if (filtered.length === 0) {
+                projectsContainer.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            if (currentView === 'grid') {
+                projectsContainer.innerHTML = filtered.map(p => {
+                    const isSaved = savedProjects.includes(p.id);
+                    return `
+                        <div class="group border border-neutral-200 dark:border-neutral-800 rounded-lg overflow-hidden bg-white dark:bg-brand-800/40 hover:border-neutral-400 dark:hover:border-neutral-600 transition flex flex-col cursor-pointer" onclick="openModal('${p.id}')">
+                            <div class="relative aspect-[4/3] bg-neutral-100 dark:bg-neutral-800 overflow-hidden">
+                                <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <button onclick="event.stopPropagation(); toggleBookmark('${p.id}')" class="absolute top-3 right-3 p-2 rounded-full bg-black/40 backdrop-blur-md text-white hover:bg-black/60 transition">
+                                    <i data-lucide="bookmark" class="w-3.5 h-3.5 ${isSaved ? 'fill-white' : ''}"></i>
+                                </button>
+                                <span class="absolute bottom-3 left-3 px-2 py-0.5 rounded text-[10px] mono bg-black/60 backdrop-blur-md text-white uppercase tracking-wider">
+                                    ${p.category}
+                                </span>
+                            </div>
+                            <div class="p-4 flex flex-col flex-1 justify-between">
+                                <div>
+                                    <div class="flex justify-between items-start mb-1">
+                                        <h3 class="font-medium text-sm text-neutral-900 dark:text-neutral-100 group-hover:text-brand-accent transition">${p.title}</h3>
+                                        <span class="mono text-xs text-neutral-400">${p.year}</span>
+                                    </div>
+                                    <p class="text-xs text-neutral-500 dark:text-neutral-400 line-clamp-2 mb-3">${p.description}</p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-neutral-100 dark:border-neutral-800/60 text-xs text-neutral-400">
+                                    <span class="mono text-[11px]">${p.author}</span>
+                                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition"></i>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // Vista Lista
+                projectsContainer.innerHTML = filtered.map(p => {
+                    const isSaved = savedProjects.includes(p.id);
+                    return `
+                        <div class="group border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 bg-white dark:bg-brand-800/40 hover:border-neutral-400 dark:hover:border-neutral-600 transition flex items-center justify-between cursor-pointer gap-4" onclick="openModal('${p.id}')">
+                            <div class="flex items-center gap-4 min-w-0">
+                                <img src="${p.image}" alt="${p.title}" class="w-12 h-12 rounded object-cover flex-shrink-0">
+                                <div class="truncate">
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="font-medium text-sm text-neutral-900 dark:text-neutral-100 group-hover:text-brand-accent transition truncate">${p.title}</h3>
+                                        <span class="px-1.5 py-0.5 rounded text-[9px] mono bg-neutral-100 dark:bg-neutral-800 text-neutral-500 uppercase flex-shrink-0">${p.category}</span>
+                                    </div>
+                                    <p class="mono text-xs text-neutral-400 truncate mt-0.5">${p.author} • ${p.year}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 flex-shrink-0">
+                                <button onclick="event.stopPropagation(); toggleBookmark('${p.id}')" class="p-2 text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition">
+                                    <i data-lucide="bookmark" class="w-4 h-4 ${isSaved ? 'fill-neutral-900 dark:fill-white text-neutral-900 dark:text-white' : ''}"></i>
+                                </button>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-neutral-400"></i>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            lucide.createIcons();
+        }
+
+        // Toggle Bookmark
+        function toggleBookmark(id) {
+            if (savedProjects.includes(id)) {
+                savedProjects = savedProjects.filter(pId => pId !== id);
+            } else {
+                savedProjects.push(id);
+            }
+            localStorage.setItem('saved_projects', JSON.stringify(savedProjects));
+            updateSavedCount();
+            renderProjects();
+        }
+
+        function updateSavedCount() {
+            savedCountEl.textContent = savedProjects.length;
+        }
+
+        // Abrir Modal
+        function openModal(id) {
+            const p = PROJECTS.find(item => item.id === id);
+            if (!p) return;
+
+            const isSaved = savedProjects.includes(p.id);
+
+            modalContent.innerHTML = `
+                <div class="aspect-video w-full bg-neutral-100 dark:bg-neutral-800 rounded-lg overflow-hidden mb-6">
+                    <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex items-start justify-between gap-4 mb-4">
+                    <div>
+                        <span class="mono text-xs text-brand-accent font-medium uppercase tracking-wider">${p.category} — ${p.year}</span>
+                        <h2 class="text-2xl font-light text-neutral-900 dark:text-neutral-100 mt-1">${p.title}</h2>
+                        <p class="mono text-xs text-neutral-400 mt-0.5">By ${p.author}</p>
+                    </div>
+                    <button onclick="toggleBookmark('${p.id}'); openModal('${p.id}');" class="p-2.5 rounded-md border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition flex-shrink-0">
+                        <i data-lucide="bookmark" class="w-4 h-4 ${isSaved ? 'fill-neutral-900 dark:fill-white' : ''}"></i>
+                    </button>
+                </div>
+                <p class="text-neutral-600 dark:text-neutral-300 text-sm leading-relaxed mb-6">${p.description}</p>
+                
+                <!-- Paleta de Colores -->
+                <div class="mb-6">
+                    <h4 class="mono text-xs text-neutral-400 uppercase tracking-wider mb-2">Color Palette</h4>
+                    <div class="flex items-center gap-2">
+                        ${p.colors.map(color => `
+                            <div onclick="copyToClipboard('${color}')" title="Copiar ${color}" class="group relative flex-1 h-10 rounded border border-neutral-200 dark:border-neutral-700 cursor-pointer overflow-hidden transition hover:scale-105" style="background-color: ${color}">
+                                <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/50 text-[10px] mono text-white font-medium">${color}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="mb-6">
+                    <h4 class="mono text-xs text-neutral-400 uppercase tracking-wider mb-2">Tags</h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        ${p.tags.map(tag => `
+                            <span class="px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 text-xs mono">#${tag}</span>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t border-neutral-200 dark:border-neutral-800 flex justify-end">
+                    <a href="${p.link}" target="_blank" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-200 text-white dark:text-neutral-900 rounded text-xs mono transition flex items-center gap-1.5">
+                        <span>OPEN_RESOURCE</span>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                    </a>
+                </div>
+            `;
+
+            lucide.createIcons();
+            projectModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            projectModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Copiar color al portapapeles
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert(`Color ${text} copiado al portapapeles`);
+        }
+
+        // Toggle Modo Oscuro
+        function toggleTheme() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        // Iniciar
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
